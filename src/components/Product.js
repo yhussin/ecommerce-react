@@ -9,31 +9,38 @@ export default class Product extends Component {
 
         return (
             <div className="container">
-                <h1>{title}</h1>
-                <div onClick={() => {
-                    console.log("clicked image")
-                }} >
+                <ProductConsumer>
+                    {(value) => (
+                        <div className="card">
+                        <h1>{title}</h1>
+                        <div onClick={() => {
+                            value.handleDetail(id)
+                        }} >
 
-                    <Link to="/details">
-                        <img src={img} alt="product" className="image"></img>
-                    </Link>
-                    <button
-                        className="cart-btn"
-                        disabled={inCart}
-                        onClick={() => {
-                            console.log("ADDED TO CART!")
-                        }}
-                    >
-                        {inCart ? (
-                            <p disabled>
-                                {""}
-                            in cart</p>
-                        ) : (
-                                <p>Buy me!</p>
-                            )}
-                    </button>
-                </div>
-                <h3>${price}</h3>
+                            <Link to="/details">
+                                <img src={img} alt="product" className="image"></img>
+                            </Link>
+                            <button
+                                className="cart-btn"
+                                disabled={inCart}
+                                onClick={() => {
+                                    value.addToCart(id)
+                                }}
+                            >
+                                {inCart ? (
+                                    <p disabled>
+                                        {" "}
+                              in cart</p>
+                                ) : (
+                                        <p>Buy me!</p>
+                                    )}
+                            </button>
+                        </div>
+                        <h3>${price}</h3>
+                        </div>
+                    )}
+
+                </ProductConsumer>
             </div>
         )
     }
@@ -41,10 +48,10 @@ export default class Product extends Component {
 
 Product.propTypes = {
     product: PropTypes.shape({
-        id: PropTypes.number, 
-        img: PropTypes.string, 
-        title: PropTypes.string, 
-        price: PropTypes.number, 
+        id: PropTypes.number,
+        img: PropTypes.string,
+        title: PropTypes.string,
+        price: PropTypes.number,
         inCart: PropTypes.bool
     }).isRequired
 }
